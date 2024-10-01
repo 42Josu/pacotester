@@ -28,7 +28,7 @@ fi
 
 # Renombrar la carpeta local
 RENAMED_DIR="$(dirname "$LOCAL_DIR")/testing"
-mv "$LOCAL_DIR" "$RENAMED_DIR"
+cp "$LOCAL_DIR" "$RENAMED_DIR"
 
 # Conectar a SFTP y realizar las operaciones
 sftp -P $PORT $USER@$SERVER <<EOF
@@ -39,16 +39,3 @@ bye
 EOF
 
 echo "La carpeta ha sido subida correctamente al servidor."
-
-# Ejecutar make en el servidor remoto
-ssh -p $PORT $USER@$SERVER <<EOF
-cd $BUILD_DIR || exit 1  # Cambiar al directorio de build, salir si falla
-paco
-rm -rf $REMOTE_DIR/libft
-EOF
-
-if [ $? -eq 0 ]; then
-    echo "PACO COMPLETED."
-else
-    echo "Ocurrió un error..."
-fi
